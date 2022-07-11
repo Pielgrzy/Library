@@ -1,0 +1,59 @@
+package Library.Time;
+
+import java.time.Duration;
+
+public class TimeFormat {
+
+    /*
+    -------------------------------------------------------------
+    Transfer seconds to format hh:mm:ss when seconds are less than 23:59:59, if more there will be shown as
+    days (days) hh:mm:ss.
+    -------------------------------------------------------------
+    Example 1:
+        String timeExample = TimeFormat.timeFormat(1025);
+        System.out.println(timeExample);
+    PRINT:
+    00:17:05
+    -------------------------------------------------------------
+    Example 2:
+        String timeExample = TimeFormat.timeFormat(911025);
+        System.out.println(timeExample);
+    PRINT:
+    10 days 13:03:45
+    -------------------------------------------------------------
+     */
+
+    public static String timeFormat(int seconds) {
+        return correctTime(seconds);
+    }
+
+    private static String correctTime(int duration) {
+        String colon = ":";
+        String days = " days ";
+        Duration songDuration = Duration.ofSeconds(duration);
+        long daysL = songDuration.toDaysPart();
+        int horus = songDuration.toHoursPart();
+        int minutes = songDuration.toMinutesPart();
+        int seconds = songDuration.toSecondsPart();
+
+        String hours_hh = timeToFormat_hhmmss(horus);
+        String minutes_mm = timeToFormat_hhmmss(minutes);
+        String seconds_ss = timeToFormat_hhmmss(seconds);
+
+        if (duration > 86400) {
+            return daysL + days + hours_hh + colon + minutes_mm + colon + seconds_ss;
+        } else {
+            return hours_hh + colon + minutes_mm + colon + seconds_ss;
+        }
+    }
+
+    private static String timeToFormat_hhmmss(int time) {
+        if (time > 10) {
+            return "" + time;
+        } else if (time < 10 && time > 0) {
+            return "0" + time;
+        } else {
+            return "00";
+        }
+    }
+}
